@@ -7,6 +7,7 @@ package kr.java.springtest.util;
 public class PointCalculator {
 
     // 등급별 적립률 (%)
+//    private static final int BRONZE_RATE = 2;
     private static final int BRONZE_RATE = 1;
     private static final int SILVER_RATE = 3;
     private static final int GOLD_RATE = 5;
@@ -30,6 +31,7 @@ public class PointCalculator {
         };
 
         return paymentAmount * rate / 100;
+//        return paymentAmount * rate / 1000;
     }
 
     /**

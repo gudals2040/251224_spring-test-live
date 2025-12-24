@@ -57,6 +57,7 @@ public class MemberService {
 
     // 전체 회원 조회
     public List<MemberResponse> findAll() {
+//        memberRepository.findAll();
         return memberRepository.findAll().stream()
                 .map(MemberResponse::from)
                 .toList();

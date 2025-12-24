@@ -9,10 +9,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -21,6 +24,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 
 // 3-1
 //@SpringBootTest // <- 전체를 로딩하기 때문에 단위테스트할 땐 적절하지 X.
@@ -101,4 +105,47 @@ public class MemberServiceTest {
     }
 
     // Mockito 고급 기능 (...)
+    // 3-5
+    @Test
+    @DisplayName("ArgumentCaptor -> 저장된 객체")
+    void register_captureArgument() {
+        // given
+        // import static org.mockito.BDDMockito.given;
+        given(memberRepository.existsByEmail(anyString()))
+                .willReturn(false);
+        // import static org.mockito.ArgumentMatchers.any;
+        given(memberRepository.save(any(Member.class)))
+                .willReturn(sampleMember);
+
+        // ArgumentCaptor -> save()로 전달한 Member.class를 캡쳐(인자)
+        ArgumentCaptor<Member> captor = ArgumentCaptor.forClass(Member.class);
+
+        // when
+        memberService.register(sampleRequest);
+
+        // then
+        then(memberRepository).should().save(captor.capture()); // Member.class
+        Member captureMember = captor.getValue();
+
+        assertThat(captureMember.getEmail()).isEqualTo(sampleMember.getEmail());
+        assertThat(captureMember.getName()).isEqualTo(sampleMember.getName());
+        assertThat(captureMember.getPoint()).isEqualTo(0);
+    }
+
+    // 3-6
+    @Test
+    @DisplayName("호출 횟수 검증")
+    void verifyCallCount() {
+        // given
+        given(memberRepository.findAll()).willReturn(List.of(sampleMember));
+
+        // when: 3번 호출
+        memberService.findAll();
+        memberService.findAll();
+        memberService.findAll();
+//        memberService.findAll();
+
+        // then: 정확하게 3번 호출
+        then(memberRepository).should(times(3)).findAll();
+    }
 }

@@ -1,4 +1,4 @@
-package kr.java.springtest.model.controller;
+package kr.java.springtest.controller;
 
 import jakarta.validation.Valid;
 import kr.java.springtest.model.dto.MemberRequest;

@@ -1,7 +1,7 @@
 package kr.java.springtest.step02;
 
 // 2-2
-import kr.java.springtest.model.controller.MemberController;
+import kr.java.springtest.controller.MemberController;
 import kr.java.springtest.model.repository.MemberRepository;
 import kr.java.springtest.service.MemberService;
 import org.junit.jupiter.api.DisplayName;

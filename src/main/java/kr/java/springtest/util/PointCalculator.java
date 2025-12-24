@@ -20,7 +20,10 @@ public class PointCalculator {
      */
     public int calculateEarnPoint(int paymentAmount, String grade) {
         if (paymentAmount < 0) {
+//        if (paymentAmount == 0) {
             throw new IllegalArgumentException("결제 금액은 0 이상이어야 합니다");
+//            throw new IllegalArgumentException("결제 금액은 양수이어야 합니다");
+//            throw new RuntimeException("결제 금액은 양수이어야 합니다");
         }
 
         int rate = switch (grade.toUpperCase()) {

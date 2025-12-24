@@ -21,12 +21,19 @@ public class MemberService {
     // 회원 가입
     @Transactional
     public MemberResponse register(MemberRequest request) {
+//        return null;
+//        return MemberResponse.from(request.toEntity());
+
+//        memberRepository.save(request.toEntity());
+
         // 이메일 중복 확인
         if (memberRepository.existsByEmail(request.getEmail())) {
             throw new IllegalArgumentException("이미 사용 중인 이메일입니다");
+//            throw new IllegalArgumentException("중복 유저입니다");
         }
 
         Member member = request.toEntity();
+//        return MemberResponse.from(member);
         Member saved = memberRepository.save(member);
 
         return MemberResponse.from(saved);
